@@ -44,6 +44,8 @@ The following attributes are exported:
 
 * `agent_pool_profile` - An `agent_pool_profile` block as documented below.
 
+* `azure_active_directory_role_based_access_control` - An `azure_active_directory_role_based_access_control` block as documented below.
+
 * `dns_prefix` - The DNS Prefix of the managed Kubernetes cluster.
 
 * `fqdn` - The FQDN of the Azure Kubernetes Managed Cluster.
@@ -75,6 +77,8 @@ The following attributes are exported:
 * `network_profile` - A `network_profile` block as documented below.
 
 * `node_resource_group` - Auto-generated Resource Group containing AKS Cluster resources.
+
+* `role_based_access_control_enabled` - If Role Based Access Control is enabled for the AKS Cluster.
 
 * `role_based_access_control` - A `role_based_access_control` block as documented below.
 
@@ -141,6 +145,22 @@ A `agent_pool_profile` block exports the following:
 * `vnet_subnet_id` - The ID of the Subnet where the Agents in the Pool are provisioned.
 
 * `zones` - Specifies the Availability Zones where the Nodes within this Agent Pool exist.
+
+---
+
+A `azure_active_directory_role_based_access_control` block exports the following:
+
+* `managed` - Is the Azure Active Directory integration Managed, meaning that Azure will create/manage the Service Principal used for integration.
+
+* `tenant_id` - The Tenant ID used for Azure Active Directory Application.
+
+* `admin_group_object_ids` - A list of Object IDs of Azure Active Directory Groups which have Admin Role on the Cluster.
+
+* `azure_rbac_enabled` - Is Role Based Access Control based on Azure AD enabled?
+
+* `client_app_id` - The Client ID of an Azure Active Directory Application.
+
+* `server_app_id` - The Server ID of an Azure Active Directory Application.
 
 ---
 

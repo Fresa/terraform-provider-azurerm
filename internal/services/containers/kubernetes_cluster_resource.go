@@ -1244,24 +1244,22 @@ func resourceKubernetesClusterCreate(d *pluginsdk.ResourceData, meta interface{}
 		return err
 	}
 
-	rbacEnabled := true
 	var azureADProfile *containerservice.ManagedClusterAADProfile
+
+	rbacEnabled := d.Get("role_based_access_control_enabled").(bool)
+	if v, ok := d.GetOk("azure_active_directory_role_based_access_control"); ok {
+		azureADProfile, err = expandKubernetesClusterAzureActiveDirectoryRBAC(v.([]interface{}), tenantId)
+		if err != nil {
+			return err
+		}
+	}
+
 	if !features.ThreePointOhBeta() {
 		if v, ok := d.GetOk("role_based_access_control"); ok {
 			rbacEnabled, azureADProfile, err = expandKubernetesClusterRoleBasedAccessControl(v.([]interface{}), tenantId)
 			if err != nil {
 				return err
 			}
-		}
-	}
-
-	if v, ok := d.GetOk("role_based_access_control_enabled"); ok {
-		rbacEnabled = v.(bool)
-	}
-	if v, ok := d.GetOk("azure_active_directory_role_based_access_control"); ok {
-		azureADProfile, err = expandKubernetesClusterAzureActiveDirectoryRBAC(v.([]interface{}), tenantId)
-		if err != nil {
-			return err
 		}
 	}
 

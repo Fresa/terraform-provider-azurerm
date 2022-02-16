@@ -30,195 +30,197 @@ func dataSourceKubernetesCluster() *pluginsdk.Resource {
 			Read: pluginsdk.DefaultTimeout(5 * time.Minute),
 		},
 
-		Schema: map[string]*pluginsdk.Schema{
-			"name": {
-				Type:     pluginsdk.TypeString,
-				Required: true,
-			},
+		Schema: func() map[string]*pluginsdk.Schema {
+			schema := map[string]*pluginsdk.Schema{
+				"name": {
+					Type:     pluginsdk.TypeString,
+					Required: true,
+				},
 
-			"resource_group_name": commonschema.ResourceGroupNameForDataSource(),
+				"resource_group_name": commonschema.ResourceGroupNameForDataSource(),
 
-			"location": commonschema.LocationComputed(),
+				"location": commonschema.LocationComputed(),
 
-			"addon_profile": {
-				Type:     pluginsdk.TypeList,
-				Computed: true,
-				Elem: &pluginsdk.Resource{
-					Schema: map[string]*pluginsdk.Schema{
-						"http_application_routing": {
-							Type:     pluginsdk.TypeList,
-							Computed: true,
-							Elem: &pluginsdk.Resource{
-								Schema: map[string]*pluginsdk.Schema{
-									"enabled": {
-										Type:     pluginsdk.TypeBool,
-										Computed: true,
-									},
-									"http_application_routing_zone_name": {
-										Type:     pluginsdk.TypeString,
-										Computed: true,
+				"addon_profile": {
+					Type:     pluginsdk.TypeList,
+					Computed: true,
+					Elem: &pluginsdk.Resource{
+						Schema: map[string]*pluginsdk.Schema{
+							"http_application_routing": {
+								Type:     pluginsdk.TypeList,
+								Computed: true,
+								Elem: &pluginsdk.Resource{
+									Schema: map[string]*pluginsdk.Schema{
+										"enabled": {
+											Type:     pluginsdk.TypeBool,
+											Computed: true,
+										},
+										"http_application_routing_zone_name": {
+											Type:     pluginsdk.TypeString,
+											Computed: true,
+										},
 									},
 								},
 							},
-						},
 
-						"oms_agent": {
-							Type:     pluginsdk.TypeList,
-							Computed: true,
-							Elem: &pluginsdk.Resource{
-								Schema: map[string]*pluginsdk.Schema{
-									"enabled": {
-										Type:     pluginsdk.TypeBool,
-										Computed: true,
-									},
-									"log_analytics_workspace_id": {
-										Type:     pluginsdk.TypeString,
-										Computed: true,
-									},
-									"oms_agent_identity": {
-										Type:     pluginsdk.TypeList,
-										Computed: true,
-										Elem: &pluginsdk.Resource{
-											Schema: map[string]*pluginsdk.Schema{
-												"client_id": {
-													Type:     pluginsdk.TypeString,
-													Computed: true,
-												},
-												"object_id": {
-													Type:     pluginsdk.TypeString,
-													Computed: true,
-												},
-												"user_assigned_identity_id": {
-													Type:     pluginsdk.TypeString,
-													Computed: true,
+							"oms_agent": {
+								Type:     pluginsdk.TypeList,
+								Computed: true,
+								Elem: &pluginsdk.Resource{
+									Schema: map[string]*pluginsdk.Schema{
+										"enabled": {
+											Type:     pluginsdk.TypeBool,
+											Computed: true,
+										},
+										"log_analytics_workspace_id": {
+											Type:     pluginsdk.TypeString,
+											Computed: true,
+										},
+										"oms_agent_identity": {
+											Type:     pluginsdk.TypeList,
+											Computed: true,
+											Elem: &pluginsdk.Resource{
+												Schema: map[string]*pluginsdk.Schema{
+													"client_id": {
+														Type:     pluginsdk.TypeString,
+														Computed: true,
+													},
+													"object_id": {
+														Type:     pluginsdk.TypeString,
+														Computed: true,
+													},
+													"user_assigned_identity_id": {
+														Type:     pluginsdk.TypeString,
+														Computed: true,
+													},
 												},
 											},
 										},
 									},
 								},
 							},
-						},
 
-						"kube_dashboard": {
-							Type:     pluginsdk.TypeList,
-							Computed: true,
-							Elem: &pluginsdk.Resource{
-								Schema: map[string]*pluginsdk.Schema{
-									"enabled": {
-										Type:     pluginsdk.TypeBool,
-										Computed: true,
+							"kube_dashboard": {
+								Type:     pluginsdk.TypeList,
+								Computed: true,
+								Elem: &pluginsdk.Resource{
+									Schema: map[string]*pluginsdk.Schema{
+										"enabled": {
+											Type:     pluginsdk.TypeBool,
+											Computed: true,
+										},
 									},
 								},
 							},
-						},
 
-						"azure_policy": {
-							Type:     pluginsdk.TypeList,
-							Computed: true,
-							Elem: &pluginsdk.Resource{
-								Schema: map[string]*pluginsdk.Schema{
-									"enabled": {
-										Type:     pluginsdk.TypeBool,
-										Computed: true,
+							"azure_policy": {
+								Type:     pluginsdk.TypeList,
+								Computed: true,
+								Elem: &pluginsdk.Resource{
+									Schema: map[string]*pluginsdk.Schema{
+										"enabled": {
+											Type:     pluginsdk.TypeBool,
+											Computed: true,
+										},
 									},
 								},
 							},
-						},
 
-						"ingress_application_gateway": {
-							Type:     pluginsdk.TypeList,
-							Computed: true,
-							Elem: &pluginsdk.Resource{
-								Schema: map[string]*pluginsdk.Schema{
-									"enabled": {
-										Type:     pluginsdk.TypeBool,
-										Computed: true,
-									},
-									"gateway_id": {
-										Type:     pluginsdk.TypeString,
-										Computed: true,
-									},
-									"effective_gateway_id": {
-										Type:     pluginsdk.TypeString,
-										Computed: true,
-									},
-									"subnet_cidr": {
-										Type:     pluginsdk.TypeString,
-										Computed: true,
-									},
-									"subnet_id": {
-										Type:     pluginsdk.TypeString,
-										Computed: true,
-									},
-									"ingress_application_gateway_identity": {
-										Type:     pluginsdk.TypeList,
-										Computed: true,
-										Elem: &pluginsdk.Resource{
-											Schema: map[string]*pluginsdk.Schema{
-												"client_id": {
-													Type:     pluginsdk.TypeString,
-													Computed: true,
-												},
-												"object_id": {
-													Type:     pluginsdk.TypeString,
-													Computed: true,
-												},
-												"user_assigned_identity_id": {
-													Type:     pluginsdk.TypeString,
-													Computed: true,
+							"ingress_application_gateway": {
+								Type:     pluginsdk.TypeList,
+								Computed: true,
+								Elem: &pluginsdk.Resource{
+									Schema: map[string]*pluginsdk.Schema{
+										"enabled": {
+											Type:     pluginsdk.TypeBool,
+											Computed: true,
+										},
+										"gateway_id": {
+											Type:     pluginsdk.TypeString,
+											Computed: true,
+										},
+										"effective_gateway_id": {
+											Type:     pluginsdk.TypeString,
+											Computed: true,
+										},
+										"subnet_cidr": {
+											Type:     pluginsdk.TypeString,
+											Computed: true,
+										},
+										"subnet_id": {
+											Type:     pluginsdk.TypeString,
+											Computed: true,
+										},
+										"ingress_application_gateway_identity": {
+											Type:     pluginsdk.TypeList,
+											Computed: true,
+											Elem: &pluginsdk.Resource{
+												Schema: map[string]*pluginsdk.Schema{
+													"client_id": {
+														Type:     pluginsdk.TypeString,
+														Computed: true,
+													},
+													"object_id": {
+														Type:     pluginsdk.TypeString,
+														Computed: true,
+													},
+													"user_assigned_identity_id": {
+														Type:     pluginsdk.TypeString,
+														Computed: true,
+													},
 												},
 											},
 										},
 									},
 								},
 							},
-						},
 
-						"open_service_mesh": {
-							Type:     pluginsdk.TypeList,
-							Computed: true,
-							Elem: &pluginsdk.Resource{
-								Schema: map[string]*pluginsdk.Schema{
-									"enabled": {
-										Type:     pluginsdk.TypeBool,
-										Computed: true,
+							"open_service_mesh": {
+								Type:     pluginsdk.TypeList,
+								Computed: true,
+								Elem: &pluginsdk.Resource{
+									Schema: map[string]*pluginsdk.Schema{
+										"enabled": {
+											Type:     pluginsdk.TypeBool,
+											Computed: true,
+										},
 									},
 								},
 							},
-						},
-						"azure_keyvault_secrets_provider": {
-							Type:     pluginsdk.TypeList,
-							Computed: true,
-							Elem: &pluginsdk.Resource{
-								Schema: map[string]*pluginsdk.Schema{
-									"enabled": {
-										Type:     pluginsdk.TypeBool,
-										Computed: true,
-									},
-									"secret_rotation_enabled": {
-										Type:     pluginsdk.TypeString,
-										Computed: true,
-									},
-									"secret_rotation_interval": {
-										Type:     pluginsdk.TypeString,
-										Computed: true,
-									},
-									"secret_identity": {
-										Type:     pluginsdk.TypeList,
-										Computed: true,
-										Elem: &pluginsdk.Resource{
-											Schema: map[string]*pluginsdk.Schema{
-												"client_id": {
-													Type:     pluginsdk.TypeString,
-													Computed: true,
-												},
-												"object_id": {
-													Type:     pluginsdk.TypeString,
-													Computed: true,
-												},
-												"user_assigned_identity_id": {
-													Type:     pluginsdk.TypeString,
-													Computed: true,
+							"azure_keyvault_secrets_provider": {
+								Type:     pluginsdk.TypeList,
+								Computed: true,
+								Elem: &pluginsdk.Resource{
+									Schema: map[string]*pluginsdk.Schema{
+										"enabled": {
+											Type:     pluginsdk.TypeBool,
+											Computed: true,
+										},
+										"secret_rotation_enabled": {
+											Type:     pluginsdk.TypeString,
+											Computed: true,
+										},
+										"secret_rotation_interval": {
+											Type:     pluginsdk.TypeString,
+											Computed: true,
+										},
+										"secret_identity": {
+											Type:     pluginsdk.TypeList,
+											Computed: true,
+											Elem: &pluginsdk.Resource{
+												Schema: map[string]*pluginsdk.Schema{
+													"client_id": {
+														Type:     pluginsdk.TypeString,
+														Computed: true,
+													},
+													"object_id": {
+														Type:     pluginsdk.TypeString,
+														Computed: true,
+													},
+													"user_assigned_identity_id": {
+														Type:     pluginsdk.TypeString,
+														Computed: true,
+													},
 												},
 											},
 										},
@@ -228,447 +230,491 @@ func dataSourceKubernetesCluster() *pluginsdk.Resource {
 						},
 					},
 				},
-			},
 
-			"agent_pool_profile": {
-				Type:     pluginsdk.TypeList,
-				Computed: true,
-				Elem: &pluginsdk.Resource{
-					Schema: func() map[string]*pluginsdk.Schema {
-						s := map[string]*pluginsdk.Schema{
-							"name": {
-								Type:     pluginsdk.TypeString,
-								Computed: true,
-							},
-
-							"type": {
-								Type:     pluginsdk.TypeString,
-								Computed: true,
-							},
-
-							"count": {
-								Type:     pluginsdk.TypeInt,
-								Computed: true,
-							},
-
-							"max_count": {
-								Type:     pluginsdk.TypeInt,
-								Computed: true,
-							},
-
-							"min_count": {
-								Type:     pluginsdk.TypeInt,
-								Computed: true,
-							},
-
-							"enable_auto_scaling": {
-								Type:     pluginsdk.TypeBool,
-								Computed: true,
-							},
-
-							"vm_size": {
-								Type:     pluginsdk.TypeString,
-								Computed: true,
-							},
-
-							"tags": commonschema.TagsDataSource(),
-
-							"os_disk_size_gb": {
-								Type:     pluginsdk.TypeInt,
-								Computed: true,
-							},
-
-							"vnet_subnet_id": {
-								Type:     pluginsdk.TypeString,
-								Computed: true,
-							},
-
-							"os_type": {
-								Type:     pluginsdk.TypeString,
-								Computed: true,
-							},
-
-							"orchestrator_version": {
-								Type:     pluginsdk.TypeString,
-								Computed: true,
-							},
-
-							"max_pods": {
-								Type:     pluginsdk.TypeInt,
-								Computed: true,
-							},
-
-							"node_labels": {
-								Type:     pluginsdk.TypeMap,
-								Computed: true,
-								Elem: &pluginsdk.Schema{
-									Type: pluginsdk.TypeString,
+				"agent_pool_profile": {
+					Type:     pluginsdk.TypeList,
+					Computed: true,
+					Elem: &pluginsdk.Resource{
+						Schema: func() map[string]*pluginsdk.Schema {
+							s := map[string]*pluginsdk.Schema{
+								"name": {
+									Type:     pluginsdk.TypeString,
+									Computed: true,
 								},
-							},
 
-							"node_taints": {
-								Type:     pluginsdk.TypeList,
-								Computed: true,
-								Elem:     &pluginsdk.Schema{Type: pluginsdk.TypeString},
-							},
-
-							"enable_node_public_ip": {
-								Type:     pluginsdk.TypeBool,
-								Computed: true,
-							},
-
-							"node_public_ip_prefix_id": {
-								Type:     pluginsdk.TypeString,
-								Computed: true,
-							},
-
-							"upgrade_settings": upgradeSettingsForDataSourceSchema(),
-
-							"zones": commonschema.ZonesMultipleComputed(),
-						}
-
-						if !features.ThreePointOhBeta() {
-							s["availability_zones"] = &schema.Schema{
-								Type:     pluginsdk.TypeList,
-								Computed: true,
-								Elem: &pluginsdk.Schema{
-									Type: pluginsdk.TypeString,
-								},
-							}
-						}
-
-						return s
-					}(),
-				},
-			},
-
-			"dns_prefix": {
-				Type:     pluginsdk.TypeString,
-				Computed: true,
-			},
-
-			"fqdn": {
-				Type:     pluginsdk.TypeString,
-				Computed: true,
-			},
-
-			"api_server_authorized_ip_ranges": {
-				Type:     pluginsdk.TypeSet,
-				Computed: true,
-				Elem: &pluginsdk.Schema{
-					Type: pluginsdk.TypeString,
-				},
-			},
-
-			"disk_encryption_set_id": {
-				Type:     pluginsdk.TypeString,
-				Computed: true,
-			},
-
-			"private_link_enabled": {
-				Type:     pluginsdk.TypeBool,
-				Computed: true,
-			},
-
-			"private_cluster_enabled": {
-				Type:     pluginsdk.TypeBool,
-				Computed: true, // TODO -- remove this when deprecation resolves
-			},
-
-			"private_fqdn": {
-				Type:     pluginsdk.TypeString,
-				Computed: true,
-			},
-
-			"identity": func() *schema.Schema {
-				if !features.ThreePointOhBeta() {
-					return &schema.Schema{
-						Type:     pluginsdk.TypeList,
-						Computed: true,
-						Elem: &pluginsdk.Resource{
-							Schema: map[string]*pluginsdk.Schema{
 								"type": {
 									Type:     pluginsdk.TypeString,
 									Computed: true,
 								},
-								"user_assigned_identity_id": {
+
+								"count": {
+									Type:     pluginsdk.TypeInt,
+									Computed: true,
+								},
+
+								"max_count": {
+									Type:     pluginsdk.TypeInt,
+									Computed: true,
+								},
+
+								"min_count": {
+									Type:     pluginsdk.TypeInt,
+									Computed: true,
+								},
+
+								"enable_auto_scaling": {
+									Type:     pluginsdk.TypeBool,
+									Computed: true,
+								},
+
+								"vm_size": {
 									Type:     pluginsdk.TypeString,
 									Computed: true,
 								},
-								"principal_id": {
+
+								"tags": commonschema.TagsDataSource(),
+
+								"os_disk_size_gb": {
+									Type:     pluginsdk.TypeInt,
+									Computed: true,
+								},
+
+								"vnet_subnet_id": {
 									Type:     pluginsdk.TypeString,
 									Computed: true,
 								},
-								"tenant_id": {
+
+								"os_type": {
 									Type:     pluginsdk.TypeString,
 									Computed: true,
 								},
-							},
-						},
-					}
-				}
 
-				return commonschema.SystemOrUserAssignedIdentityComputed()
-			}(),
+								"orchestrator_version": {
+									Type:     pluginsdk.TypeString,
+									Computed: true,
+								},
 
-			"kubernetes_version": {
-				Type:     pluginsdk.TypeString,
-				Computed: true,
-			},
+								"max_pods": {
+									Type:     pluginsdk.TypeInt,
+									Computed: true,
+								},
 
-			"kube_admin_config": {
-				Type:     pluginsdk.TypeList,
-				Computed: true,
-				Elem: &pluginsdk.Resource{
-					Schema: map[string]*pluginsdk.Schema{
-						"host": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-						"username": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-						"password": {
-							Type:      pluginsdk.TypeString,
-							Computed:  true,
-							Sensitive: true,
-						},
-						"client_certificate": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-						"client_key": {
-							Type:      pluginsdk.TypeString,
-							Computed:  true,
-							Sensitive: true,
-						},
-						"cluster_ca_certificate": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-					},
-				},
-			},
-
-			"kube_admin_config_raw": {
-				Type:      pluginsdk.TypeString,
-				Computed:  true,
-				Sensitive: true,
-			},
-
-			"kube_config": {
-				Type:     pluginsdk.TypeList,
-				Computed: true,
-				Elem: &pluginsdk.Resource{
-					Schema: map[string]*pluginsdk.Schema{
-						"host": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-						"username": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-						"password": {
-							Type:      pluginsdk.TypeString,
-							Computed:  true,
-							Sensitive: true,
-						},
-						"client_certificate": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-						"client_key": {
-							Type:      pluginsdk.TypeString,
-							Computed:  true,
-							Sensitive: true,
-						},
-						"cluster_ca_certificate": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-					},
-				},
-			},
-
-			"kube_config_raw": {
-				Type:      pluginsdk.TypeString,
-				Computed:  true,
-				Sensitive: true,
-			},
-
-			"kubelet_identity": {
-				Type:     pluginsdk.TypeList,
-				Computed: true,
-				Elem: &pluginsdk.Resource{
-					Schema: map[string]*pluginsdk.Schema{
-						"client_id": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-						"object_id": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-						"user_assigned_identity_id": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-					},
-				},
-			},
-
-			"linux_profile": {
-				Type:     pluginsdk.TypeList,
-				Computed: true,
-				Elem: &pluginsdk.Resource{
-					Schema: map[string]*pluginsdk.Schema{
-						"admin_username": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-						"ssh_key": {
-							Type:     pluginsdk.TypeList,
-							Computed: true,
-
-							Elem: &pluginsdk.Resource{
-								Schema: map[string]*pluginsdk.Schema{
-									"key_data": {
-										Type:     pluginsdk.TypeString,
-										Computed: true,
+								"node_labels": {
+									Type:     pluginsdk.TypeMap,
+									Computed: true,
+									Elem: &pluginsdk.Schema{
+										Type: pluginsdk.TypeString,
 									},
 								},
-							},
-						},
+
+								"node_taints": {
+									Type:     pluginsdk.TypeList,
+									Computed: true,
+									Elem:     &pluginsdk.Schema{Type: pluginsdk.TypeString},
+								},
+
+								"enable_node_public_ip": {
+									Type:     pluginsdk.TypeBool,
+									Computed: true,
+								},
+
+								"node_public_ip_prefix_id": {
+									Type:     pluginsdk.TypeString,
+									Computed: true,
+								},
+
+								"upgrade_settings": upgradeSettingsForDataSourceSchema(),
+
+								"zones": commonschema.ZonesMultipleComputed(),
+							}
+
+							if !features.ThreePointOhBeta() {
+								s["availability_zones"] = &schema.Schema{
+									Type:     pluginsdk.TypeList,
+									Computed: true,
+									Elem: &pluginsdk.Schema{
+										Type: pluginsdk.TypeString,
+									},
+								}
+							}
+
+							return s
+						}(),
 					},
 				},
-			},
 
-			"windows_profile": {
-				Type:     pluginsdk.TypeList,
-				Computed: true,
-				Elem: &pluginsdk.Resource{
-					Schema: map[string]*pluginsdk.Schema{
-						"admin_username": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
+				"dns_prefix": {
+					Type:     pluginsdk.TypeString,
+					Computed: true,
+				},
+
+				"fqdn": {
+					Type:     pluginsdk.TypeString,
+					Computed: true,
+				},
+
+				"api_server_authorized_ip_ranges": {
+					Type:     pluginsdk.TypeSet,
+					Computed: true,
+					Elem: &pluginsdk.Schema{
+						Type: pluginsdk.TypeString,
 					},
 				},
-			},
 
-			"network_profile": {
-				Type:     pluginsdk.TypeList,
-				Computed: true,
-				Elem: &pluginsdk.Resource{
-					Schema: map[string]*pluginsdk.Schema{
-						"network_plugin": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-
-						"network_policy": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-
-						"service_cidr": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-
-						"dns_service_ip": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-
-						"docker_bridge_cidr": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-
-						"pod_cidr": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-
-						"load_balancer_sku": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
-						},
-					},
+				"disk_encryption_set_id": {
+					Type:     pluginsdk.TypeString,
+					Computed: true,
 				},
-			},
 
-			"node_resource_group": {
-				Type:     pluginsdk.TypeString,
-				Computed: true,
-			},
+				"private_link_enabled": {
+					Type:     pluginsdk.TypeBool,
+					Computed: true,
+				},
 
-			"role_based_access_control": {
-				Type:     pluginsdk.TypeList,
-				Computed: true,
-				Elem: &pluginsdk.Resource{
-					Schema: map[string]*pluginsdk.Schema{
-						"enabled": {
-							Type:     pluginsdk.TypeBool,
-							Computed: true,
-						},
-						"azure_active_directory": {
+				"private_cluster_enabled": {
+					Type:     pluginsdk.TypeBool,
+					Computed: true, // TODO -- remove this when deprecation resolves
+				},
+
+				"private_fqdn": {
+					Type:     pluginsdk.TypeString,
+					Computed: true,
+				},
+
+				"identity": func() *schema.Schema {
+					if !features.ThreePointOhBeta() {
+						return &schema.Schema{
 							Type:     pluginsdk.TypeList,
 							Computed: true,
 							Elem: &pluginsdk.Resource{
 								Schema: map[string]*pluginsdk.Schema{
-									"admin_group_object_ids": {
-										Type:     pluginsdk.TypeList,
-										Computed: true,
-										Elem: &pluginsdk.Schema{
-											Type: pluginsdk.TypeString,
-										},
-									},
-
-									"client_app_id": {
+									"type": {
 										Type:     pluginsdk.TypeString,
 										Computed: true,
 									},
-
-									"managed": {
-										Type:     pluginsdk.TypeBool,
-										Computed: true,
-									},
-
-									"server_app_id": {
+									"user_assigned_identity_id": {
 										Type:     pluginsdk.TypeString,
 										Computed: true,
 									},
-
+									"principal_id": {
+										Type:     pluginsdk.TypeString,
+										Computed: true,
+									},
 									"tenant_id": {
 										Type:     pluginsdk.TypeString,
 										Computed: true,
 									},
 								},
 							},
+						}
+					}
+
+					return commonschema.SystemOrUserAssignedIdentityComputed()
+				}(),
+
+				"kubernetes_version": {
+					Type:     pluginsdk.TypeString,
+					Computed: true,
+				},
+
+				"kube_admin_config": {
+					Type:     pluginsdk.TypeList,
+					Computed: true,
+					Elem: &pluginsdk.Resource{
+						Schema: map[string]*pluginsdk.Schema{
+							"host": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+							"username": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+							"password": {
+								Type:      pluginsdk.TypeString,
+								Computed:  true,
+								Sensitive: true,
+							},
+							"client_certificate": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+							"client_key": {
+								Type:      pluginsdk.TypeString,
+								Computed:  true,
+								Sensitive: true,
+							},
+							"cluster_ca_certificate": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
 						},
 					},
 				},
-			},
 
-			"service_principal": {
-				Type:     pluginsdk.TypeList,
-				Computed: true,
-				Elem: &pluginsdk.Resource{
-					Schema: map[string]*pluginsdk.Schema{
-						"client_id": {
-							Type:     pluginsdk.TypeString,
-							Computed: true,
+				"kube_admin_config_raw": {
+					Type:      pluginsdk.TypeString,
+					Computed:  true,
+					Sensitive: true,
+				},
+
+				"kube_config": {
+					Type:     pluginsdk.TypeList,
+					Computed: true,
+					Elem: &pluginsdk.Resource{
+						Schema: map[string]*pluginsdk.Schema{
+							"host": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+							"username": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+							"password": {
+								Type:      pluginsdk.TypeString,
+								Computed:  true,
+								Sensitive: true,
+							},
+							"client_certificate": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+							"client_key": {
+								Type:      pluginsdk.TypeString,
+								Computed:  true,
+								Sensitive: true,
+							},
+							"cluster_ca_certificate": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
 						},
 					},
 				},
-			},
 
-			"tags": commonschema.TagsDataSource(),
-		},
+				"kube_config_raw": {
+					Type:      pluginsdk.TypeString,
+					Computed:  true,
+					Sensitive: true,
+				},
+
+				"kubelet_identity": {
+					Type:     pluginsdk.TypeList,
+					Computed: true,
+					Elem: &pluginsdk.Resource{
+						Schema: map[string]*pluginsdk.Schema{
+							"client_id": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+							"object_id": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+							"user_assigned_identity_id": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+						},
+					},
+				},
+
+				"linux_profile": {
+					Type:     pluginsdk.TypeList,
+					Computed: true,
+					Elem: &pluginsdk.Resource{
+						Schema: map[string]*pluginsdk.Schema{
+							"admin_username": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+							"ssh_key": {
+								Type:     pluginsdk.TypeList,
+								Computed: true,
+
+								Elem: &pluginsdk.Resource{
+									Schema: map[string]*pluginsdk.Schema{
+										"key_data": {
+											Type:     pluginsdk.TypeString,
+											Computed: true,
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+
+				"windows_profile": {
+					Type:     pluginsdk.TypeList,
+					Computed: true,
+					Elem: &pluginsdk.Resource{
+						Schema: map[string]*pluginsdk.Schema{
+							"admin_username": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+						},
+					},
+				},
+
+				"network_profile": {
+					Type:     pluginsdk.TypeList,
+					Computed: true,
+					Elem: &pluginsdk.Resource{
+						Schema: map[string]*pluginsdk.Schema{
+							"network_plugin": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+
+							"network_policy": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+
+							"service_cidr": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+
+							"dns_service_ip": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+
+							"docker_bridge_cidr": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+
+							"pod_cidr": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+
+							"load_balancer_sku": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+						},
+					},
+				},
+
+				"node_resource_group": {
+					Type:     pluginsdk.TypeString,
+					Computed: true,
+				},
+
+				"role_based_access_control_enabled": {
+					Type:     pluginsdk.TypeBool,
+					Computed: true,
+				},
+
+				"azure_active_directory_role_based_access_control": {
+					Type:     pluginsdk.TypeList,
+					Computed: true,
+					Elem: &pluginsdk.Resource{
+						Schema: map[string]*pluginsdk.Schema{
+							"admin_group_object_ids": {
+								Type:     pluginsdk.TypeList,
+								Computed: true,
+								Elem: &pluginsdk.Schema{
+									Type: pluginsdk.TypeString,
+								},
+							},
+
+							"client_app_id": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+
+							"managed": {
+								Type:     pluginsdk.TypeBool,
+								Computed: true,
+							},
+
+							"server_app_id": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+
+							"tenant_id": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+						},
+					},
+				},
+
+				"service_principal": {
+					Type:     pluginsdk.TypeList,
+					Computed: true,
+					Elem: &pluginsdk.Resource{
+						Schema: map[string]*pluginsdk.Schema{
+							"client_id": {
+								Type:     pluginsdk.TypeString,
+								Computed: true,
+							},
+						},
+					},
+				},
+
+				"tags": commonschema.TagsDataSource(),
+			}
+
+			if !features.ThreePointOhBeta() {
+				schema["role_based_access_control"] = &pluginsdk.Schema{
+					Type:     pluginsdk.TypeList,
+					Computed: true,
+					Elem: &pluginsdk.Resource{
+						Schema: map[string]*pluginsdk.Schema{
+							"enabled": {
+								Type:     pluginsdk.TypeBool,
+								Computed: true,
+							},
+							"azure_active_directory": {
+								Type:     pluginsdk.TypeList,
+								Computed: true,
+								Elem: &pluginsdk.Resource{
+									Schema: map[string]*pluginsdk.Schema{
+										"admin_group_object_ids": {
+											Type:     pluginsdk.TypeList,
+											Computed: true,
+											Elem: &pluginsdk.Schema{
+												Type: pluginsdk.TypeString,
+											},
+										},
+
+										"client_app_id": {
+											Type:     pluginsdk.TypeString,
+											Computed: true,
+										},
+
+										"managed": {
+											Type:     pluginsdk.TypeBool,
+											Computed: true,
+										},
+
+										"server_app_id": {
+											Type:     pluginsdk.TypeString,
+											Computed: true,
+										},
+
+										"tenant_id": {
+											Type:     pluginsdk.TypeString,
+											Computed: true,
+										},
+									},
+								},
+							},
+						},
+					},
+				}
+			}
+			return schema
+		}(),
 	}
 }
 
@@ -754,9 +800,21 @@ func dataSourceKubernetesClusterRead(d *pluginsdk.ResourceData, meta interface{}
 			return fmt.Errorf("setting `network_profile`: %+v", err)
 		}
 
-		roleBasedAccessControl := flattenKubernetesClusterDataSourceRoleBasedAccessControl(props)
-		if err := d.Set("role_based_access_control", roleBasedAccessControl); err != nil {
-			return fmt.Errorf("setting `role_based_access_control`: %+v", err)
+		if !features.ThreePointOhBeta() {
+			roleBasedAccessControl := flattenKubernetesClusterDataSourceRoleBasedAccessControl(props)
+			if err := d.Set("role_based_access_control", roleBasedAccessControl); err != nil {
+				return fmt.Errorf("setting `role_based_access_control`: %+v", err)
+			}
+		}
+
+		rbacEnabled := true
+		if props.EnableRBAC != nil {
+			rbacEnabled = *props.EnableRBAC
+		}
+		d.Set("role_based_access_control_enabled", rbacEnabled)
+		aadRbac := flattenKubernetesClusterDataSourceAzureActiveDirectoryRBAC(props)
+		if err := d.Set("azure_active_directory_role_based_access_control", aadRbac); err != nil {
+			return fmt.Errorf("setting `azure_active_directory_role_based_access_control`: %+v", err)
 		}
 
 		servicePrincipal := flattenKubernetesClusterDataSourceServicePrincipalProfile(props.ServicePrincipalProfile)
@@ -845,6 +903,43 @@ func flattenKubernetesClusterDataSourceRoleBasedAccessControl(input *containerse
 			"azure_active_directory": results,
 		},
 	}
+}
+
+func flattenKubernetesClusterDataSourceAzureActiveDirectoryRBAC(input *containerservice.ManagedClusterProperties) []interface{} {
+	results := make([]interface{}, 0)
+	if profile := input.AadProfile; profile != nil {
+		adminGroupObjectIds := utils.FlattenStringSlice(profile.AdminGroupObjectIDs)
+
+		clientAppId := ""
+		if profile.ClientAppID != nil {
+			clientAppId = *profile.ClientAppID
+		}
+
+		managed := false
+		if profile.Managed != nil {
+			managed = *profile.Managed
+		}
+
+		serverAppId := ""
+		if profile.ServerAppID != nil {
+			serverAppId = *profile.ServerAppID
+		}
+
+		tenantId := ""
+		if profile.TenantID != nil {
+			tenantId = *profile.TenantID
+		}
+
+		results = append(results, map[string]interface{}{
+			"admin_group_object_ids": adminGroupObjectIds,
+			"client_app_id":          clientAppId,
+			"managed":                managed,
+			"server_app_id":          serverAppId,
+			"tenant_id":              tenantId,
+		})
+	}
+
+	return results
 }
 
 func flattenKubernetesClusterDataSourceAccessProfile(profile containerservice.ManagedClusterAccessProfile) (*string, []interface{}) {

@@ -96,6 +96,8 @@ In addition, one of either `identity` or `service_principal` blocks must be spec
 
 * `azure_active_directory_role_based_access_control` - (Optional) - A `azure_active_directory_role_based_access_control` block as defined below.
 
+-> **NOTE:** The property `role_based_access_control_enabled` must be set to `true` in order to configure `azure_active_directory_role_based_access_control`.
+
 * `disk_encryption_set_id` - (Optional) The ID of the Disk Encryption Set which should be used for the Nodes and Volumes. More information [can be found in the documentation](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys).
 
 * `http_proxy_config` - (Optional) A `http_proxy_config` block as defined below.
